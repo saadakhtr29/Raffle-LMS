@@ -1,0 +1,104 @@
+body {
+  margin: 0;
+  font-family: Arial;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+}
+
+.screen {
+  width: 1200px;
+  height: 670px;
+  background: url("bgfinale.png") no-repeat center/cover;
+  position: relative;
+  color: white;
+  overflow: hidden;
+}
+
+.prize {
+  position: absolute;
+  top: 150px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 28px;
+  font-weight: bold;
+  color: #f1c40f;
+}
+
+.numberBox {
+  position: absolute;
+  top: 210px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #e7b74f;
+  padding: 30px 60px;
+  border-radius: 20px;
+}
+
+.digits {
+  display: flex;
+  gap: 20px;
+}
+
+.digit {
+  font-size: 70px;
+  background: #0d2f5a;
+  color: #7ce6ff;
+  padding: 10px 20px;
+  border-radius: 10px;
+}
+
+.winner {
+    position: absolute;
+    top: 390px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 28px;
+    width: 400px;
+    text-align: center;
+    font-weight: 700;
+
+}
+
+.rightButtons {
+  position: absolute;
+  top: 230px;
+  right: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.btn {
+  background: #f1c40f;
+  border: none;
+  padding: 12px 30px;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.checkbox {
+  position: absolute;
+  bottom: 160px;
+  right: 115px;
+  font-size: 14px;
+}
+
+.bottomButtons {
+  position: absolute;
+  bottom: 100px;
+  right: 80px;
+  display: flex;
+  gap: 15px;
+}
+
+.time {
+  position: absolute;
+  bottom: 60px;
+  right: 80px;
+  font-size: 14px;
+  color: #ffcc00;
+}

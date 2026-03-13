@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>PSN Raffle</title>
+<link rel="stylesheet" href="style.css">
+  </head>
+
+  <body>
+    <div class="screen">
+      <!-- PRIZE -->
+      <div class="prize">Prize: PHP 10,000.00 (25/25)</div>
+
+      <!-- NUMBER BOX -->
+      <div class="numberBox">
+        <div class="digits">
+          <div class="digit">0</div>
+          <div class="digit">0</div>
+          <div class="digit">0</div>
+          <div class="digit">0</div>
+          <div class="digit">0</div>
+        </div>
+      </div>
+
+      <!-- WINNER -->
+      <div class="winner" id="winnerName"></div>
+
+      <!-- DRAW BUTTONS -->
+      <div class="rightButtons">
+        <button class="btn" onclick="startDraw()">DRAW</button>
+
+        <button class="btn" onclick="redraw()">RE-DRAW</button>
+      </div>
+
+      <!-- CHECKBOX -->
+      <div class="checkbox">
+        <input type="checkbox" checked />
+        Remove Name on next draw
+      </div>
+
+      <!-- SAVE / NEXT -->
+      <div class="bottomButtons">
+        <button class="btn">SAVE</button>
+
+        <button class="btn">NEXT DRAW</button>
+      </div>
+
+      <!-- TIME -->
+      <div class="time" id="time"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+  
+</html>
