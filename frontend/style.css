@@ -59,16 +59,35 @@ body {
     width: 400px;
     text-align: center;
     font-weight: 700;
-
 }
 
-.rightButtons {
+.draw-container {
   position: absolute;
   top: 230px;
   right: 80px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+}
+
+.btn-draw {
+  font-size: 24px;
+  padding: 20px 30px !important;
+  background: linear-gradient(135deg, #f1c40f 0%, #d4ac0d 100%) !important;
+  color: #0d2f5a !important;
+  border: 1px solid #fff !important;
+  box-shadow: 0 0 20px rgba(241, 196, 15, 0.4);
+  transition: all 0.3s ease;
+  letter-spacing: 2px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.btn-draw:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 30px rgba(241, 196, 15, 0.6);
+  background: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%) !important;
+}
+
+.btn-draw:active {
+  transform: scale(0.95);
 }
 
 .btn {
@@ -80,25 +99,51 @@ body {
   cursor: pointer;
 }
 
-.checkbox {
+.management-wrapper {
   position: absolute;
-  bottom: 160px;
-  right: 115px;
+  bottom: 80px;
+  right: 60px;
+  border: 1px solid #ffffff;
+  padding: 10px;
+  border-radius: 20px;
+  background: none;
+}
+
+.control-box {
+  background: rgba(13, 47, 90, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 20px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 280px;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-size: 14px;
+  color: #fff;
 }
 
 .bottomButtons {
-  position: absolute;
-  bottom: 100px;
-  right: 80px;
   display: flex;
-  gap: 15px;
+  justify-content: center;
+}
+
+.btn-save {
+  width: 100%;
 }
 
 .time {
   position: absolute;
-  bottom: 60px;
+  bottom: 25px;
   right: 80px;
-  font-size: 14px;
+  font-size: 20px;
+  font-weight: bold;
   color: #ffcc00;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
 }

@@ -1,0 +1,173 @@
+:root {
+    --primary: #7ce6ff;
+    --primary-dark: #00b4db;
+    --accent: #f1c40f;
+    --bg-dark: #050a14;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --text-main: #ffffff;
+    --text-dim: #a0aec0;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.glass-module {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 2rem;
+}
+
+.hidden { display: none !important; }
+
+/* Login Container */
+#login-container {
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+h1 { text-align: center; margin-bottom: 2rem; color: var(--primary); }
+
+.input-group { margin-bottom: 1.5rem; }
+.input-group label { display: block; margin-bottom: 0.5rem; color: var(--text-dim); }
+.input-group input, .input-group select {
+    width: 100%;
+    padding: 0.8rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    color: white;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border: none;
+    border-radius: 8px;
+    color: black;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.btn-primary:active { transform: scale(0.98); }
+
+/* Dashboard Layout */
+#dashboard-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 260px;
+    height: calc(100% - 4rem);
+    margin: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo { font-size: 1.5rem; font-weight: 800; margin-bottom: 3rem; color: var(--primary); }
+
+.nav-links { list-style: none; padding: 0; flex-grow: 1; }
+.nav-links li {
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+    color: var(--text-dim);
+}
+
+.nav-links li.active, .nav-links li:hover {
+    background: var(--glass-bg);
+    color: var(--primary);
+}
+
+.content { flex-grow: 1; padding: 2rem; overflow-y: auto; }
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 1rem;
+}
+
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+.stat-card h3 { color: var(--text-dim); font-size: 0.9rem; }
+.stat-card p { font-size: 2.5rem; font-weight: 700; margin: 0; color: var(--primary); }
+.stat-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(124, 230, 255, 0.1);
+}
+
+/* Tables */
+.table-container { margin-top: 2rem; padding: 0; overflow: hidden; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--glass-border); }
+th { color: var(--text-dim); font-weight: 400; }
+
+.btn-secondary {
+    background: transparent;
+    border: 1px solid var(--glass-border);
+    color: var(--text-dim);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-secondary:hover {
+    background: var(--glass-bg);
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+/* Modals */
+.modal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.modal-content { width: 100%; max-width: 500px; }
+.modal-actions { display: flex; gap: 1rem; margin-top: 2rem; }
+
+.upload-area {
+    border: 2px dashed var(--glass-border);
+    text-align: center;
+    padding: 4rem;
+    margin-bottom: 2rem;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.dashboard-section {
+    animation: fadeIn 0.4s ease-out;
+}

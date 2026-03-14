@@ -2,14 +2,19 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>PSN Raffle</title>
-<link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="PSN Raffle LMS - Premium Raffle and Lottery Management System" />
+    <meta name="keywords" content="raffle, lottery, management, system, psn, draw" />
+    <meta name="author" content="Saad Akhtar" />
+    <title>PSN Raffle | Premium LMS</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="stylesheet" href="style.css">
   </head>
 
   <body>
     <div class="screen">
       <!-- PRIZE -->
-      <div class="prize">Prize: PHP 10,000.00 (25/25)</div>
+      <div class="prize">Prize: ...</div>
 
       <!-- NUMBER BOX -->
       <div class="numberBox">
@@ -26,23 +31,22 @@
       <div class="winner" id="winnerName"></div>
 
       <!-- DRAW BUTTONS -->
-      <div class="rightButtons">
-        <button class="btn" onclick="startDraw()">DRAW</button>
-
-        <button class="btn" onclick="redraw()">RE-DRAW</button>
+      <div class="draw-container">
+        <button class="btn btn-draw" onclick="startDraw()">DRAW</button>
       </div>
 
-      <!-- CHECKBOX -->
-      <div class="checkbox">
-        <input type="checkbox" checked />
-        Remove Name on next draw
-      </div>
+      <!-- MANAGEMENT WRAPPER -->
+      <div class="management-wrapper">
+        <div class="control-box glass-module">
+          <div class="checkbox">
+            <input type="checkbox" id="remove-name-cb" checked />
+            <span>Remove Name on next draw</span>
+          </div>
 
-      <!-- SAVE / NEXT -->
-      <div class="bottomButtons">
-        <button class="btn">SAVE</button>
-
-        <button class="btn">NEXT DRAW</button>
+          <div class="bottomButtons">
+            <button class="btn btn-save" onclick="saveResult()">SAVE</button>
+          </div>
+        </div>
       </div>
 
       <!-- TIME -->

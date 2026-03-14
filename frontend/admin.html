@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium Admin Panel for Raffle LMS - Secure Management of Prizes and Winners.">
+    <title>Admin Portal | Raffle LMS</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin-style.css">
+</head>
+<body>
+    <div id="login-container" class="glass-module">
+        <h1>Admin Access</h1>
+        <form id="login-form">
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required placeholder="admin@example.com">
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required placeholder="••••••••">
+            </div>
+            <button type="submit" class="btn-primary">Sign In</button>
+        </form>
+    </div>
+
+    <div id="dashboard-container" class="hidden">
+        <nav class="sidebar glass-module">
+            <div class="logo">🎟️  Raffle LMS</div>
+            <ul class="nav-links">
+                <li class="active" data-section="overview">Overview</li>
+                <li data-section="prizes">Prizes</li>
+                <li data-section="tickets">Tickets</li>
+                <li data-section="winners">Winners</li>
+            </ul>
+            <button id="logout-btn" class="btn-secondary">Logout</button>
+        </nav>
+
+        <main class="content">
+            <header>
+                <h2 id="section-title">Overview</h2>
+                <div class="user-info">Admin Account</div>
+            </header>
+
+            <section id="overview" class="dashboard-section">
+                <div class="stats-grid">
+                    <div class="stat-card glass-module">
+                        <h3>Total Tickets</h3>
+                        <p id="stat-tickets">0</p>
+                    </div>
+                    <div class="stat-card glass-module">
+                        <h3>Total Prizes</h3>
+                        <p id="stat-prizes">0</p>
+                    </div>
+                    <div class="stat-card glass-module">
+                        <h3>Winners</h3>
+                        <p id="stat-winners">0</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="prizes" class="dashboard-section hidden">
+                <div class="action-bar">
+                    <button id="add-prize-btn" class="btn-primary">+ Add Prize</button>
+                </div>
+                <div class="table-container glass-module">
+                    <table id="prizes-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="tickets" class="dashboard-section hidden">
+                <div class="upload-area glass-module" id="drop-zone">
+                    <p>Drag & Drop your Ticket file (.csv, .xlsx)</p>
+                    <input type="file" id="ticket-file" hidden accept=".csv,.xlsx">
+                    <button class="btn-secondary" onclick="document.getElementById('ticket-file').click()">Browse Files</button>
+                </div>
+                <div class="search-bar">
+                    <input type="text" id="ticket-search" placeholder="Search tickets by number or name...">
+                </div>
+                <div class="table-container glass-module">
+                    <table id="tickets-table">
+                        <thead>
+                            <tr>
+                                <th>Number</th>
+                                <th>Name</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="winners" class="dashboard-section hidden">
+                <div class="action-bar">
+                    <div class="export-buttons">
+                        <button id="export-xlsx-btn" class="btn-secondary">Export .XLSX</button>
+                        <button id="export-csv-btn" class="btn-secondary">Export .CSV</button>
+                    </div>
+                </div>
+                <div class="table-container glass-module">
+                    <table id="winners-table">
+                        <thead>
+                            <tr>
+                                <th>Prize</th>
+                                <th>Ticket</th>
+                                <th>Name</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="prize-modal" class="modal hidden">
+        <div class="modal-content glass-module">
+            <h3 id="modal-title">Add Prize</h3>
+            <form id="prize-form">
+                <input type="hidden" id="prize-id">
+                <div class="input-group">
+                    <label>Prize Name</label>
+                    <input type="text" id="prize-name" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Prize</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
