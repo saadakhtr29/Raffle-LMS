@@ -20,16 +20,23 @@ const uploadTickets = async (req, res) => {
       return res.status(400).json({ error: 'Unsupported file format' });
     }
 
+    console.log(`Parsed ${data.length} records from file.`);
+    if (data.length > 0) {
+      console.log('First record sample:', JSON.stringify(data[0]));
+    }
+
     let uploadedCount = 0;
     let duplicateCount = 0;
+    let skipCount = 0;
 
-    // Use a transaction or batching if performance is an issue for 100k+ tickets
-    // For now, simple loop with error handling for duplicates
     for (const record of data) {
-      const ticketNumber = String(record.ticket_number || record.TicketNumber || record.ticketNumber || '');
-      const name = record.name || record.Name || record.participant_name || '';
+      const ticketNumber = String(record.ticket_number || record.TicketNumber || record.ticketNumber || '').trim();
+      const name = String(record.name || record.Name || record.participant_name || '').trim();
 
-      if (!ticketNumber || !name) continue;
+      if (!ticketNumber || !name) {
+        skipCount++;
+        continue;
+      }
 
       try {
         await prisma.ticket.upsert({
@@ -50,7 +57,7 @@ const uploadTickets = async (req, res) => {
     // Cleanup file
     fs.unlinkSync(filePath);
 
-    res.json({ uploaded: uploadedCount, duplicates: duplicateCount });
+    res.json({ uploaded: uploadedCount, duplicates: duplicateCount, skipped: skipCount });
   } catch (error) {
     console.error('Upload error:', error);
     if (fs.existsSync(filePath)) fs.unlinkSync(filePath);

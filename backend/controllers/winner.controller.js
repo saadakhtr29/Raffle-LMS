@@ -1,6 +1,21 @@
 const prisma = require('../lib/prisma');
 const ExcelJS = require('exceljs');
 
+const getWinners = async (req, res) => {
+  try {
+    const winners = await prisma.winner.findMany({
+      include: {
+        ticket: true,
+        prize: true,
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+    res.json(winners);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch winners' });
+  }
+};
+
 const exportWinners = async (req, res) => {
   try {
     const winners = await prisma.winner.findMany({
@@ -47,4 +62,31 @@ const exportWinners = async (req, res) => {
   }
 };
 
-module.exports = { exportWinners };
+const exportWinnersCSV = async (req, res) => {
+  try {
+    const winners = await prisma.winner.findMany({
+      include: {
+        ticket: true,
+        prize: true,
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    let csvContent = "Prize,Ticket,Name,Date\n";
+    winners.forEach(w => {
+      const prize = w.prize ? w.prize.name : 'No Prize';
+      const ticket = w.ticket.ticketNumber;
+      const name = w.ticket.name;
+      const date = w.createdAt.toLocaleString().replace(/,/g, '');
+      csvContent += `"${prize}","${ticket}","${name}","${date}"\n`;
+    });
+
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', 'attachment; filename=winners.csv');
+    res.send(csvContent);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to export CSV' });
+  }
+};
+
+module.exports = { getWinners, exportWinners, exportWinnersCSV };

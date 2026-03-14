@@ -13,7 +13,10 @@ const parseCSV = (filePath) => {
   return new Promise((resolve, reject) => {
     const results = [];
     fs.createReadStream(filePath)
-      .pipe(csv())
+      .pipe(csv({
+        mapHeaders: ({ header }) => header.trim().replace(/^\ufeff/, ''), // Trims and removes UTF-8 BOM
+        mapValues: ({ value }) => value.trim()
+      }))
       .on('data', (data) => results.push(data))
       .on('end', () => resolve(results))
       .on('error', (error) => reject(error));

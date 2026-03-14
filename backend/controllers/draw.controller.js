@@ -1,48 +1,83 @@
 const prisma = require('../lib/prisma');
+const logger = require('../lib/logger');
 
 const startDraw = async (req, res) => {
-  const { prizeId } = req.body;
+  let { prizeId } = req.body;
 
   try {
-    // Implementing the specific random selection logic from SRS
-    const result = await prisma.$queryRaw`
-      SELECT * FROM tickets
-      WHERE is_winner = false
-      AND removed = false
-      ORDER BY RAND()
-      LIMIT 1
-    `;
+    let selectedPrizeName = 'No Prize Assigned';
 
-    if (!result || result.length === 0) {
-      return res.status(404).json({ error: 'No eligible tickets found for draw' });
+    // If no prizeId provided, pick a random AVAILABLE prize
+    if (!prizeId) {
+      const activePrizes = await prisma.prize.findMany({
+        where: { status: 'AVAILABLE' }
+      });
+      
+      if (activePrizes.length > 0) {
+        const randomPrize = activePrizes[Math.floor(Math.random() * activePrizes.length)];
+        prizeId = randomPrize.id;
+        selectedPrizeName = randomPrize.name;
+      }
+    } else {
+      // If prizeId was provided, fetch its name for the display
+      const prize = await prisma.prize.findUnique({ where: { id: parseInt(prizeId) } });
+      if (prize) selectedPrizeName = prize.name;
     }
 
-    const winnerTicket = result[0];
+    // Generate a literal random number between 1 and 15000
+    const drawnNumber = Math.floor(Math.random() * 15000) + 1;
+    const ticketNumberStr = String(drawnNumber).padStart(5, '0');
 
-    // Mark ticket as winner
-    await prisma.ticket.update({
-      where: { id: winnerTicket.id },
-      data: { isWinner: true },
+    // Check if this specific ticket exists and is eligible
+    const winnerTicket = await prisma.ticket.findFirst({
+      where: {
+        ticketNumber: ticketNumberStr,
+        isWinner: false,
+        removed: false
+      }
     });
 
-    // Create winner record if prizeId is provided
-    if (prizeId) {
-      await prisma.winner.create({
-        data: {
-          ticketId: winnerTicket.id,
-          prizeId: parseInt(prizeId),
-        },
+    if (!winnerTicket) {
+      return res.json({
+        ticketNumber: ticketNumberStr,
+        name: 'No Winner',
+        ticketId: null,
+        prizeName: selectedPrizeName,
+        winnerFound: false
       });
     }
 
+    const ticketId = winnerTicket.id;
+
+    // Mark ticket as winner
+    await prisma.ticket.update({
+      where: { id: ticketId },
+      data: { isWinner: true },
+    });
+
+    // Create winner record if prizeId is resolved
+    if (prizeId) {
+      const winner = await prisma.winner.create({
+        data: {
+          ticketId: ticketId,
+          prizeId: parseInt(prizeId),
+        },
+        include: { prize: true }
+      });
+      selectedPrizeName = winner.prize ? winner.prize.name : selectedPrizeName;
+    }
+
     res.json({
-      ticketNumber: winnerTicket.ticket_number,
+      ticketNumber: ticketNumberStr,
       name: winnerTicket.name,
-      ticketId: winnerTicket.id
+      ticketId: ticketId,
+      prizeName: selectedPrizeName,
+      winnerFound: true
     });
   } catch (error) {
-    console.error('Draw error:', error);
-    res.status(500).json({ error: 'Raffle draw failed' });
+    console.error('CRITICAL DRAW ERROR:', error);
+    logger.error(`Draw failed: ${error.message}`, { stack: error.stack });
+    res.status(500).json({ error: 'Raffle draw failed: ' + error.message });
   }
 };
 

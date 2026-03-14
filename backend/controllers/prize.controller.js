@@ -39,14 +39,45 @@ const updatePrize = async (req, res) => {
 
 const deletePrize = async (req, res) => {
   const { id } = req.params;
+  const prizeId = parseInt(id);
+
   try {
+    // Check if prize has winners linked
+    const winnerCount = await prisma.winner.count({
+      where: { prizeId }
+    });
+
+    if (winnerCount > 0) {
+      return res.status(400).json({ 
+        error: 'Cannot delete prize: This prize has already been awarded to winners.' 
+      });
+    }
+
     await prisma.prize.delete({
-      where: { id: parseInt(id) },
+      where: { id: prizeId },
     });
     res.json({ message: 'Prize deleted successfully' });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to delete prize' });
+    console.error('Delete error:', error);
+    res.status(500).json({ error: 'Failed to delete prize - it may be referenced elsewhere' });
   }
 };
 
-module.exports = { createPrize, getPrizes, updatePrize, deletePrize };
+const getRandomPrize = async (req, res) => {
+  try {
+    const activePrizes = await prisma.prize.findMany({
+      where: { status: 'AVAILABLE' }
+    });
+
+    if (activePrizes.length === 0) {
+      return res.status(404).json({ error: 'No active prizes found' });
+    }
+
+    const randomPrize = activePrizes[Math.floor(Math.random() * activePrizes.length)];
+    res.json(randomPrize);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch random prize' });
+  }
+};
+
+module.exports = { createPrize, getPrizes, updatePrize, deletePrize, getRandomPrize };

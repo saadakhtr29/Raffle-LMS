@@ -1,10 +1,14 @@
 {
   "name": "raffle-lottery-management-system-backend",
-  "version": "1.0.0",
-  "Author": "Saad Akhtar",
-  "description": "Raffle-lottery management system backend",
-  "main": "server.js",
-  "scripts": {
+  "version": "1.1.0",
+  "author": "Saad Akhtar",
+  "license": "MIT",
+  "software_details": {
+    "type": "LMS",
+    "purpose": "Raffle & Lottery Management",
+    "year": "2026"
+  },
+   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
     "prisma:generate": "prisma generate",
@@ -12,9 +16,6 @@
     "prisma:seed": "node prisma/seed.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@prisma/adapter-mariadb": "^7.5.0",
     "@prisma/client": "^7.5.0",
@@ -24,13 +25,16 @@
     "dotenv": "^17.3.1",
     "exceljs": "^4.4.0",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.3.1",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
     "mariadb": "^3.5.2",
     "morgan": "^1.10.1",
     "multer": "^2.1.1",
     "uuid": "^13.0.0",
-    "xlsx": "^0.18.5"
+    "winston": "^3.19.0",
+    "xlsx": "^0.18.5",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "nodemon": "^3.1.14",
