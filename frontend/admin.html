@@ -83,7 +83,7 @@
                 <div class="upload-area glass-module" id="drop-zone">
                     <p>Drag & Drop your Ticket file (.csv, .xlsx)</p>
                     <input type="file" id="ticket-file" hidden accept=".csv,.xlsx">
-                    <button class="btn-secondary" onclick="document.getElementById('ticket-file').click()">Browse Files</button>
+                    <button type="button" class="btn-secondary" id="browse-tickets-btn">Browse Files</button>
                 </div>
                 <div class="search-bar">
                     <input type="text" id="ticket-search" placeholder="Search tickets by number or name...">
@@ -99,6 +99,11 @@
                         </thead>
                         <tbody></tbody>
                     </table>
+                </div>
+                <div class="pagination-controls">
+                    <button id="prev-page-btn" class="btn-secondary">Previous</button>
+                    <span id="page-info">Page 1</span>
+                    <button id="next-page-btn" class="btn-secondary">Next</button>
                 </div>
             </section>
 
@@ -137,7 +142,7 @@
                     <input type="text" id="prize-name" required>
                 </div>
                 <div class="modal-actions">
-                    <button type="button" class="btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="button" class="btn-secondary" id="cancel-prize-btn">Cancel</button>
                     <button type="submit" class="btn-primary">Save Prize</button>
                 </div>
             </form>

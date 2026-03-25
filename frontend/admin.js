@@ -132,19 +132,39 @@ async function loadPrizes() {
             <td>${p.name}</td>
             <td>${p.status}</td>
             <td>
-                <button class="btn-secondary" onclick="editPrize(${p.id}, '${p.name}')">Edit</button>
-                <button class="btn-secondary" onclick="deletePrize(${p.id})">Delete</button>
+                <button class="btn-secondary edit-prize-btn" data-id="${p.id}" data-name="${p.name}">Edit</button>
+                <button class="btn-secondary delete-prize-btn" data-id="${p.id}">Delete</button>
             </td>
         `;
         tbody.appendChild(tr);
     });
 }
 
+// Event Delegation for Prizes Table
+document.querySelector('#prizes-table tbody').addEventListener('click', (e) => {
+    if (e.target.classList.contains('edit-prize-btn')) {
+        const { id, name } = e.target.dataset;
+        editPrize(id, name);
+    } else if (e.target.classList.contains('delete-prize-btn')) {
+        const { id } = e.target.dataset;
+        deletePrize(id);
+    }
+});
+
 document.getElementById('add-prize-btn').addEventListener('click', () => {
     document.getElementById('modal-title').innerText = 'Add Prize';
     document.getElementById('prize-id').value = '';
     document.getElementById('prize-name').value = '';
     document.getElementById('prize-modal').classList.remove('hidden');
+});
+
+// New Event Listeners for CSP compliance
+document.getElementById('browse-tickets-btn').addEventListener('click', () => {
+    document.getElementById('ticket-file').click();
+});
+
+document.getElementById('cancel-prize-btn').addEventListener('click', () => {
+    closeModal();
 });
 
 async function editPrize(id, name) {
@@ -183,8 +203,15 @@ function closeModal() {
 }
 
 // Tickets Management
+let currentTicketPage = 1;
+
 async function loadTickets(search = '') {
-    const tickets = await fetchAPI(`/tickets?search=${search}`);
+    const data = await fetchAPI(`/tickets?search=${search}&page=${currentTicketPage}&limit=50`);
+    if (!data) return;
+
+    const { tickets, totalPages, page } = data;
+    currentTicketPage = page;
+
     const tbody = document.querySelector('#tickets-table tbody');
     tbody.innerHTML = '';
     tickets.forEach(t => {
@@ -196,9 +223,26 @@ async function loadTickets(search = '') {
         `;
         tbody.appendChild(tr);
     });
+
+    document.getElementById('page-info').innerText = `Page ${page} of ${totalPages || 1}`;
+    document.getElementById('prev-page-btn').disabled = (page === 1);
+    document.getElementById('next-page-btn').disabled = (page >= totalPages);
 }
 
+document.getElementById('prev-page-btn').addEventListener('click', () => {
+    if (currentTicketPage > 1) {
+        currentTicketPage--;
+        loadTickets(document.getElementById('ticket-search').value);
+    }
+});
+
+document.getElementById('next-page-btn').addEventListener('click', () => {
+    currentTicketPage++;
+    loadTickets(document.getElementById('ticket-search').value);
+});
+
 document.getElementById('ticket-search').addEventListener('input', (e) => {
+    currentTicketPage = 1;
     loadTickets(e.target.value);
 });
 

@@ -171,3 +171,26 @@ th { color: var(--text-dim); font-weight: 400; }
 .dashboard-section {
     animation: fadeIn 0.4s ease-out;
 }
+
+/* Pagination */
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    padding: 1rem;
+    border-top: 1px solid var(--glass-border);
+}
+
+#page-info {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.pagination-controls button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+}

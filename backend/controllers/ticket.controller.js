@@ -66,28 +66,38 @@ const uploadTickets = async (req, res) => {
 };
 
 const searchTickets = async (req, res) => {
-  const { search } = req.query;
+  const { search = '', page = 1, limit = 50 } = req.query;
+  const skip = (parseInt(page) - 1) * parseInt(limit);
+  const take = parseInt(limit);
 
   try {
-    const tickets = await prisma.ticket.findMany({
-      where: {
-        OR: [
-          { ticketNumber: { contains: search } },
-          { name: { contains: search } },
-        ],
-      },
-      select: {
-        id: true,
-        ticketNumber: true,
-        name: true,
-        isWinner: true,
-        removed: true,
-      },
-      take: 50, // Limit results for performance
-    });
+    const where = {
+      OR: [
+        { ticketNumber: { contains: search } },
+        { name: { contains: search } },
+      ],
+    };
 
-    res.json(tickets);
+    const [tickets, total] = await Promise.all([
+      prisma.ticket.findMany({
+        where,
+        select: {
+          id: true,
+          ticketNumber: true,
+          name: true,
+          isWinner: true,
+          removed: true,
+        },
+        skip,
+        take,
+        orderBy: { createdAt: 'asc' },
+      }),
+      prisma.ticket.count({ where }),
+    ]);
+
+    res.json({ tickets, total, page: parseInt(page), totalPages: Math.ceil(total / take) });
   } catch (error) {
+    console.error('Search error:', error);
     res.status(500).json({ error: 'Search failed' });
   }
 };
